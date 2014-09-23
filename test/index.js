@@ -1,8 +1,15 @@
 var superagent = require('superagent')
-var expect     = require('expect.js')
+var expect     = require('expect.js');
+var boot       = require('..').boot;
+var shutdown   = require('..').shutdown;
 
 describe('express rest api server', function(){
   var id
+
+  before(function () {
+    boot();
+  });
+
   it('post object', function(done){
     superagent.post('http://localhost:3000/collections/test')
       .send({'name': 'John',
@@ -73,4 +80,8 @@ describe('express rest api server', function(){
         done()
       })
   })
+
+  after(function() {
+    shutdown();
+  });
 })
