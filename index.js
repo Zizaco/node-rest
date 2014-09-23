@@ -68,6 +68,24 @@ app.del('/collections/:collectionName/:id', function(req, res, next){
   })
 })
 
-app.listen(3000, function(){
-  console.log('Server is running')
-})
+// Boot server
+var server;
+var boot = function() {
+  server = app.listen(3000, function(){
+    console.log('Server is running')
+  })
+}
+
+// Shutdown function
+var shutdown = function() {
+  server.close();
+}
+
+// If main, boot else export boot and shutdown
+if (require.main === module) {
+  boot();
+} else {
+  console.info('Running app as a module');
+  exports.boot     = boot;
+  exports.shutdown = shutdown;
+}
